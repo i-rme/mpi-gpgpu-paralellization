@@ -9,10 +9,10 @@ void splitArray(int *parts, int numbers[], int num, int numParts, int index) {
 
 int main(void)
 {
-    printf("Hello, ");
+    printf("Hello: ");
     
     //VARIABLES
-    int numParts = 2;     //How many parts we want
+    int numParts = 1;     //How many parts we want
     int index = 0;        //What part we want
     
     //INPUT
@@ -24,8 +24,10 @@ int main(void)
     int parts[partsSize];
     memset(parts, 0, sizeof parts);    //Initialize array with 0s
     
+    //FUNCTION
     splitArray(parts, numbers, numbersSize, numParts, index);
     
+    //SHOW RESULT
     for (int i=0; i<partsSize; i++){
         printf("%i, ", parts[i]);
     }
