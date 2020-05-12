@@ -12,3 +12,11 @@ int * filterPrimes(int array[])
 //INPUT: An array filled with integers
 //OUTPUT: The highest value of the array, null if empty
 int findMaximum(int array[])
+
+
+TAREAS:
+
+-> MASTER: Dividir vector entre workers
+-> SLAVE: Buscar numeros primos en el array
+-> SLAVE: Buscar el máximo
+-> MASTER: Buscar el máximo de todos los máximos
