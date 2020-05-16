@@ -31,6 +31,20 @@ int isPrime(int number){
     return 1;
 }
 
+
+int removeNonPrimes(int *primes, int numbers[], int numbersSize) {
+    
+    int primesSize = 0;
+    
+    for(int i = 0; i < numbersSize; ++i){
+        if(isPrime(numbers[i])){
+            primes[primesSize++] = numbers[i];
+        }
+    }
+    
+    return primesSize;
+}
+
 int largest(int arr[], int n){
     
   int max = arr[0];
@@ -53,7 +67,7 @@ int main(void)
     int index = 0;        //What part we want
     
     //INPUT
-    int numbers[] = { 1, 2, 3, 4, 5, 6 };
+    int numbers[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 39, 40, 41, 42, 43 };
     int numbersSize = sizeof numbers / sizeof numbers[0];
 
     //OUTPUT
@@ -64,9 +78,16 @@ int main(void)
     //FUNCTION
     splitArray(parts, numbers, numbersSize, numParts, index);
     
-    printf("Largest number in given array is %i. \n", largest(parts, partsSize));
+    int primes[10];
+    int primesSize = removeNonPrimes(primes, parts, partsSize);
     
-    printf("Hello, world!\n");
-    printf("%i", isPrime(7));
+    //for (int i=0; i<primesSize; i++){
+    //    printf("%i, ", primes[i]);
+    //}
+    
+    printf("Largest number in given array is %i. \n", largest(primes, primesSize));
+    
+    //printf("Hello, world!\n");
+    //printf("%i", isPrime(7));
     return 0;
 }
