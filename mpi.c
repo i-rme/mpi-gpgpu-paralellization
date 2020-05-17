@@ -1,57 +1,79 @@
 #include <mpi.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
+#include <string.h>
 
-int createRandomVector2(int size){
-        return 288;
-};
+void splitArray(int *parts, int numbers[], int numbersSize, int numParts, int index) {
+  int partsSize = numbersSize / numParts;
 
-int createRandom(int max){
-        int r;
-        srand (time(NULL));
-        r = rand() % max;
-        return r;
-};
+  int start = index * partsSize;
+  int end = start + partsSize;
 
-int* createRandomVector(int size){
-        int *vector = (int*)malloc(size*32);
-        for(int i=0 ; i<=size ; i++){
-                vector[i] = 3;
-        }
-        free(vector);
-        return vector;
-};
+  if (index + 1 == numParts) { // If its the last index add the rest of the numbers
+    end = numbersSize;
+  }
 
-void printVector(int vector[], int size){
-        for(int i=0 ; i<=size ; i++){
-                printf("%i, ", vector[i]);
-        }
-};
+  for (int i = start; i <= end; ++i) {
+    parts[i - start] = numbers[i];
+  }
+}
 
+int isPrime(int number) {
+  if (number == 0 || number == 1 || number == 4) { // Special cases
+    return 0;
+  }
 
-int main(int argc, char* argv[]){
+  for (int i = 2; i < number / 2; i++) { // General algorithm
+    if (number % i == 0)
+      return 0;
+  }
 
-        int size, rank;
+  return 1;
+}
 
-        MPI_Init(&argc, &argv);
-        MPI_Comm_size(MPI_COMM_WORLD, &size);
-        MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-        //MPI_Get_processor_name(name, &nameLength);
+int removeNonPrimes(int *primes, int numbers[], int numbersSize) {
+  int primesSize = 0;
 
-        if(rank == 0){
-                printf("Master\n");
-                int *vector = createRandomVector(7);
-                printVector(vector, 7);
-        }else{
-                printf("Slave\n");
-        }
+  for (int i = 0; i < numbersSize; ++i) {
+    if (isPrime(numbers[i])) {
+      primes[primesSize++] = numbers[i];
+    }
+  }
 
-        printf("Communicator size: %i", size);
-        //printf("Funcion: %i", createRandomVector(2));
+  return primesSize;
+}
 
+int largest(int arr[], int n) {
+  int max = arr[0];
 
-        MPI_Finalize();
-        return 0;
+  for (int i = 1; i < n; i++) {
+    if (arr[i] > max) {
+      max = arr[i];
+    }
+  }
 
+  return max;
+}
+
+void printArray(int array[], int arraySize) {
+  for (int i = 0; i <= arraySize; i++) {
+    printf("%i, ", array[i]);
+  }
+}
+
+int main(int argc, char* argv[]) {
+
+  // INITIALIZE MPI
+  int mpi_comm_size, mpi_comm_rank;
+  MPI_Init(&argc, &argv);
+  MPI_Comm_size(MPI_COMM_WORLD, &mpi_comm_size);
+  MPI_Comm_rank(MPI_COMM_WORLD, &mpi_comm_rank);
+
+  if(mpi_comm_rank == 0){
+  	printf("Master\n");
+  }else{
+  	printf("Slave\n");
+  }
+
+  MPI_Finalize();
+  return 0;
 }
