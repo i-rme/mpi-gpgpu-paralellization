@@ -53,6 +53,12 @@ int largest(int arr[], int n) {
   return max;
 }
 
+void printArray(int array[], int arraySize) {
+  for (int i = 0; i <= arraySize; i++) {
+    printf("%i, ", array[i]);
+  }
+}
+
 int main(void) {
   // VARIABLES
   int numParts = 2; // How many parts we want
