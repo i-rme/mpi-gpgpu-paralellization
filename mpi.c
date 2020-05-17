@@ -71,12 +71,12 @@ int main(int argc, char* argv[]) {
   MPI_Comm_rank(MPI_COMM_WORLD, &mpi_comm_rank);
 
   int index;
-  int numbers[];
+  int [] numbers;
   int numeroSplit;
   int numbersSize;
   int numParts;
   int partsSize;
-  int parts[];
+  int [] parts;
 
   if(mpi_comm_rank == 0){
 
