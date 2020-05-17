@@ -102,13 +102,35 @@ int main(int argc, char* argv[]) {
 
     }
 
+    // MASTER IS WORKING TOO
+
+    int index = 0;
+    int numbersSize = sizeof numbers / sizeof numbers[0];
+    int numParts = mpi_comm_size;
+    int partsSize = numbersSize / numParts;
+    int parts[partsSize];
+    memset(parts, 0, sizeof parts);
+    int numeroSplit = splitArray(parts, numbers, numbersSize, numParts, index);
+
+    int primes[10];
+    int primesSize = removeNonPrimes(primes, parts, numeroSplit);
+    int largest = largestNumber(primes, primesSize);
+
+    // RECEIVING FROM SLAVES
+
+    int results[mpi_comm_size];
+    results[0] = largest;
+
     for (int i=1; i<mpi_comm_size; i++){
       int largest = 0;
-      //printf("DEBUG: Master empieza a recibir de %i ", i);
       MPI_Recv(&largest, 1, MPI_INT, i, 1, MPI_COMM_WORLD, &status);
-      //printf("DEBUG: Master acaba de recibir de %i ", i);
-      printf("Message received from %i: Largest is %i \n", i, largest);
+      //printf("Message received from %i: Largest is %i \n", i, largest);
+      results[i] = largest;
     }
+
+    // PRINT RESULT ARRAY
+    int absoluteLargest = largestNumber(results, mpi_comm_size);
+    printf("The largest prime number of the array is %i. ", absoluteLargest);
 
   }else{
     
