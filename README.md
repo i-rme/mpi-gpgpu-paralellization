@@ -1,7 +1,11 @@
 # mpi-gpgpu-paralellization
 
 ## main.c: Main implementantion 
-## mpi.c: Paralellized using MPI
+## mpi.cpp: Paralellized using MPI
+
+### How to execute mpi.cpp
+mpic++ -o mpi mpi.cpp
+mpirun -n 4 -hosts mpi-1 ./mpi
 
 https://codebunk.com/b/
 
