@@ -1,0 +1,39 @@
+The system is: Darwin - 19.4.0 - x86_64
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler: /usr/local/bin/gcc-9 
+Build flags: 
+Id flags:  
+
+The output was:
+0
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out"
+
+The C compiler identification is GNU, found in "/Users/Marcos/Desktop/gpgpuTask/cmake-build-debug/CMakeFiles/3.16.5/CompilerIdC/a.out"
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+Compiler: /usr/local/bin/g++-9 
+Build flags: 
+Id flags:  
+
+The output was:
+0
+
+
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.out"
+
+The CXX compiler identification is GNU, found in "/Users/Marcos/Desktop/gpgpuTask/cmake-build-debug/CMakeFiles/3.16.5/CompilerIdCXX/a.out"
+
+Determining if the C compiler works passed with the following output:
+Change Dir: /Users/Marcos/Desktop/gpgpuTask/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_e6a32/fast && /Library/Developer/CommandLineTools/usr/bin/make -f CMakeFiles/cmTC_e6a32.dir/build.make CMakeFiles/cmTC_e6a32.dir/build
+Building C object CMakeFiles/cmTC_e6a32.dir/testCCompiler.c.o
+/usr/local/bin/gcc-9   -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk   -o CMakeFiles/cmTC_e6a32.dir/testCCompiler.c.o   -c /Users/Marcos/Desktop/gpgpuTask/cmake-build-debug/CMakeFiles/CMakeTmp/testCCompiler.c
+Linking C executable cmTC_e6a32
+"/Users/Marcos/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/201.7223.86/CLion.app/Contents/bin/cmake/mac/bin/cmake" -E cmake_link_script CMakeFiles/cmTC_e6a32.dir/link.txt --verbose=1
+/usr/local/bin/gcc-9   -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names   CMakeFiles/cmTC_e6a32.dir/testCCompiler.c.o  -o cmTC_e6a32 
+
+
+
