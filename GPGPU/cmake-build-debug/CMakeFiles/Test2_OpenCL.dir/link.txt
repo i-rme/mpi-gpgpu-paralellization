@@ -1,1 +1,0 @@
-/usr/local/bin/g++-9  -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/Test2_OpenCL.dir/main.cpp.o  -o Test2_OpenCL  -framework OpenCL 
