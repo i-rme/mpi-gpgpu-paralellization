@@ -1,10 +1,6 @@
-
 #include <iostream>
-
 #ifdef __APPLE__
-
 #include <OpenCL/opencl.h>
-
 #else
 #include <CL/cl.h>
 #endif
@@ -12,7 +8,6 @@
 char* getKernelCode(const char* fileName, size_t *kernelSourceSize);
 
 int main() {
-
     const int VECTOR_LENGTH = 1000;
     int A[VECTOR_LENGTH];
     int B[VECTOR_LENGTH];
@@ -32,24 +27,18 @@ int main() {
     cl_context context = clCreateContext(NULL, 1, &deviceId, NULL, NULL, NULL);
     cl_command_queue commandQueue = clCreateCommandQueue(context, deviceId, NULL, NULL);
 
-    cl_mem aMemBuffer = clCreateBuffer(context, CL_MEM_READ_ONLY, VECTOR_LENGTH * sizeof(int),
-            NULL, NULL);
-    cl_mem bMemBuffer = clCreateBuffer(context, CL_MEM_READ_ONLY, VECTOR_LENGTH * sizeof(int),
-                                       NULL, NULL);
-    cl_mem cMemBuffer = clCreateBuffer(context, CL_MEM_WRITE_ONLY, VECTOR_LENGTH * sizeof(int),
-                                       NULL, NULL);
+    cl_mem aMemBuffer = clCreateBuffer(context, CL_MEM_READ_ONLY, VECTOR_LENGTH * sizeof(int), NULL, NULL);
+    cl_mem bMemBuffer = clCreateBuffer(context, CL_MEM_READ_ONLY, VECTOR_LENGTH * sizeof(int), NULL, NULL);
+    cl_mem cMemBuffer = clCreateBuffer(context, CL_MEM_WRITE_ONLY, VECTOR_LENGTH * sizeof(int), NULL, NULL);
 
-    clEnqueueWriteBuffer(commandQueue, aMemBuffer, CL_TRUE, 0, VECTOR_LENGTH*sizeof(int), A, 0,
-                        NULL, NULL);
-    clEnqueueWriteBuffer(commandQueue, bMemBuffer, CL_TRUE, 0, VECTOR_LENGTH*sizeof(int), B, 0,
-                         NULL, NULL);
+    clEnqueueWriteBuffer(commandQueue, aMemBuffer, CL_TRUE, 0, VECTOR_LENGTH*sizeof(int), A, 0, NULL, NULL);
+    clEnqueueWriteBuffer(commandQueue, bMemBuffer, CL_TRUE, 0, VECTOR_LENGTH*sizeof(int), B, 0, NULL, NULL);
 
     size_t kernelSourceSize;
     char* kernelSourceCode = getKernelCode("../vector_add.cl", &kernelSourceSize);
     printf("Code:\n%s\n",kernelSourceCode);
 
-    cl_program program = clCreateProgramWithSource(context, 1,(const char **) &kernelSourceCode,
-            (const size_t*) &kernelSourceSize, NULL);
+    cl_program program = clCreateProgramWithSource(context, 1,(const char **) &kernelSourceCode, (const size_t*) &kernelSourceSize, NULL);
 
     clBuildProgram(program, 1, &deviceId, NULL, NULL, NULL);
 
@@ -62,11 +51,9 @@ int main() {
     clSetKernelArg(add_kernel, 3, sizeof(int), (void *) &D);
 
     size_t VECTOR_LENGTH2 = 100;
-    clEnqueueNDRangeKernel(commandQueue, add_kernel, 1, NULL,  &VECTOR_LENGTH2, NULL,
-            0, NULL, NULL);
+    clEnqueueNDRangeKernel(commandQueue, add_kernel, 1, NULL,  &VECTOR_LENGTH2, NULL, 0, NULL, NULL);
 
-    clEnqueueReadBuffer(commandQueue, cMemBuffer, CL_TRUE, 0, VECTOR_LENGTH * sizeof(int),
-            C, 0, NULL, NULL);
+    clEnqueueReadBuffer(commandQueue, cMemBuffer, CL_TRUE, 0, VECTOR_LENGTH * sizeof(int), C, 0, NULL, NULL);
 
     for (int i=0; i<VECTOR_LENGTH;i++)
         printf("%d--> %d + %d = %d\n",i, A[i], B[i], C[i]);
@@ -79,7 +66,7 @@ char* getKernelCode(const char* fileName, size_t *kernelSourceSize){
     char *kernelSourceCode;
 
     kernelSourceFile = fopen(fileName, "r");
-    if(!kernelSourceFile){
+    if(!kernelSourceFile) {
         fprintf(stderr, "Failed to load kernel.\n");
         exit(1);
     }
