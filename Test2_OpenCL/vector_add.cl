@@ -38,8 +38,14 @@ __kernel void vector_add(
 
     }
 
+      int max = primes[0];
 
-    //results[index] = primesSize;
-    results[index] = primes[1];
+        for (int k = 1; k < primesSize; k++) {
+          if (primes[k] > max) {
+            max = primes[k];
+          }
+        }
+
+    results[index] = max;
 
 }
