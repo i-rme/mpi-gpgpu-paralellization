@@ -10,30 +10,36 @@ __kernel void vector_add(
     int partsSize = end[index] - start[index];
 
     int primes[10];
-
     int primesSize = 0;
 
-      for (int i = start[index]; i < end[index]; ++i) {
+     for (int i = start[index]; i < end[index]; ++i) {
 
-          if (number == 0 || number == 1 || number == 4) { // Special cases
+         int currentNum = numbers[i];
+         int isFinished = 0;
+
+         if (currentNum <= 1){
+            isFinished = 1;
+            continue;
+         }
+         if (currentNum % 2 == 0 && currentNum > 2){
+            isFinished = 1;
+            continue;
+         }
+         for(int j = 3; j < currentNum / 2; j+= 2){
+             if (currentNum % j == 0){
+                isFinished = 1;
+                break;
+             }
+
+         }
+         if (isFinished == 0){
             primes[primesSize++] = numbers[i];
-          }
+         }
 
-          for (int i = 2; i < number / 2; i++) { // General algorithm
-            if (number % i == 0)
-              primes[primesSize++] = numbers[i];
-          }
-      }
+    }
 
 
-      int max = primes[primesSize];
+    //results[index] = primesSize;
+    results[index] = primes[1];
 
-        for (int i = 1; i < primesSize; i++) {
-          if (primes[i] > max) {
-            max = primes[i];
-          }
-        }
-
-   // results[index] = max;
-   results[index] = 5;
 }
