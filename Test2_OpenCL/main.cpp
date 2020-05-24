@@ -9,18 +9,28 @@
 #endif
 
 char* getKernelCode(const char* fileName, size_t *kernelSourceSize);
+int getStart(int numbersSize, int numParts, int index);
+int getEnd(int numbersSize, int numParts, int index);
 
 int main() {
 
-    const int numParts = 6;
+    const int numParts = 6; //numero de cores a usar
     const int numbersSize = 48;
 
     int results[numParts];
+    int start[numParts];
+    int end[numParts];
 
     int numbers[] = {0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12,
                      13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
                      26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38,
                      39, 40, 41, 42, 43, 44, 45, 46, 47};
+
+    for (int i=0; i<numParts;i++){
+        start[i] = getStart(numbersSize, numParts, i);
+        end[i] = getEnd(numbersSize, numParts, i);
+    }
+
 
     cl_platform_id platformId = NULL;
     cl_device_id deviceId = NULL;
@@ -33,10 +43,18 @@ int main() {
 
     cl_mem numbersMemBuffer = clCreateBuffer(context, CL_MEM_READ_ONLY, numbersSize * sizeof(int),
                                        NULL, NULL);
+    cl_mem startMemBuffer = clCreateBuffer(context, CL_MEM_READ_ONLY, numParts * sizeof(int),
+                                             NULL, NULL);
+    cl_mem endMemBuffer = clCreateBuffer(context, CL_MEM_READ_ONLY, numParts * sizeof(int),
+                                             NULL, NULL);
     cl_mem resultsMemBuffer = clCreateBuffer(context, CL_MEM_WRITE_ONLY, numParts * sizeof(int),
                                        NULL, NULL);
 
     clEnqueueWriteBuffer(commandQueue, numbersMemBuffer, CL_TRUE, 0, numbersSize*sizeof(int), numbers, 0,
+                         NULL, NULL);
+    clEnqueueWriteBuffer(commandQueue, startMemBuffer, CL_TRUE, 0, numbersSize*sizeof(int), start, 0,
+                         NULL, NULL);
+    clEnqueueWriteBuffer(commandQueue, endMemBuffer, CL_TRUE, 0, numbersSize*sizeof(int), end, 0,
                          NULL, NULL);
 
     size_t kernelSourceSize;
@@ -52,8 +70,10 @@ int main() {
 
     int D = 10;
     clSetKernelArg(add_kernel, 0, sizeof(cl_mem), (void *) &numbersMemBuffer);
-    clSetKernelArg(add_kernel, 1, sizeof(cl_mem), (void *) &resultsMemBuffer);
-    clSetKernelArg(add_kernel, 2, sizeof(int), (void *) &D);
+    clSetKernelArg(add_kernel, 1, sizeof(cl_mem), (void *) &startMemBuffer);
+    clSetKernelArg(add_kernel, 2, sizeof(cl_mem), (void *) &endMemBuffer);
+    clSetKernelArg(add_kernel, 3, sizeof(cl_mem), (void *) &resultsMemBuffer);
+    clSetKernelArg(add_kernel, 4, sizeof(int), (void *) &D);
 
     size_t VECTOR_LENGTH2 = numParts;
     clEnqueueNDRangeKernel(commandQueue, add_kernel, 1, NULL,  &VECTOR_LENGTH2, NULL,
@@ -88,6 +108,26 @@ char* getKernelCode(const char* fileName, size_t *kernelSourceSize){
     return kernelSourceCode;
 }
 
+int getStart(int numbersSize, int numParts, int index) {
+    int partsSize = numbersSize / numParts;
+
+    int start = index * partsSize;
+
+   return start;
+}
+
+int getEnd(int numbersSize, int numParts, int index) {
+    int partsSize = numbersSize / numParts;
+
+    int start = index * partsSize;
+    int end = start + partsSize;
+
+    if (index + 1 == numParts) { // If its the last index add the rest of the numbers
+        end = numbersSize;
+    }
+
+    return end;
+}
 
 int splitArray(int *parts, int numbers[], int numbersSize, int numParts, int index) {
     int partsSize = numbersSize / numParts;
