@@ -21,15 +21,15 @@ int splitArray(int *parts, int numbers[], int numbersSize, int numParts, int ind
 
 int isPrime(int number) {
   if (number == 0 || number == 1 || number == 4) { // Special cases
-    return 1;
+    return 0;
   }
 
   for (int i = 2; i < number / 2; i++) { // General algorithm
     if (number % i == 0)
-      return 0;
+      return 1;
   }
 
-  return 1;
+  return 0;
 }
 
 int removeNonPrimes(int *primes, int numbers[], int numbersSize) {
