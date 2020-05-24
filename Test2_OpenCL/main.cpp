@@ -52,9 +52,9 @@ int main() {
 
     clEnqueueWriteBuffer(commandQueue, numbersMemBuffer, CL_TRUE, 0, numbersSize*sizeof(int), numbers, 0,
                          NULL, NULL);
-    clEnqueueWriteBuffer(commandQueue, startMemBuffer, CL_TRUE, 0, numbersSize*sizeof(int), start, 0,
+    clEnqueueWriteBuffer(commandQueue, startMemBuffer, CL_TRUE, 0, numParts*sizeof(int), start, 0,
                          NULL, NULL);
-    clEnqueueWriteBuffer(commandQueue, endMemBuffer, CL_TRUE, 0, numbersSize*sizeof(int), end, 0,
+    clEnqueueWriteBuffer(commandQueue, endMemBuffer, CL_TRUE, 0, numParts*sizeof(int), end, 0,
                          NULL, NULL);
 
     size_t kernelSourceSize;
@@ -81,6 +81,8 @@ int main() {
 
     clEnqueueReadBuffer(commandQueue, resultsMemBuffer, CL_TRUE, 0, numParts * sizeof(int),
                         results, 0, NULL, NULL);
+
+
 
     for (int i=0; i<numParts;i++)
         printf("%d--> %d = %d\n",i, numbers[i], results[i]);
