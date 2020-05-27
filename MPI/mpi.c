@@ -26,10 +26,10 @@ int isPrime(int number) {
 
   for (int i = 2; i < number / 2; i++) { // General algorithm
     if (number % i == 0)
-      return 1;
+      return 0;
   }
 
-  return 0;
+  return 1;
 }
 
 int removeNonPrimes(int *primes, int numbers[], int numbersSize) {
