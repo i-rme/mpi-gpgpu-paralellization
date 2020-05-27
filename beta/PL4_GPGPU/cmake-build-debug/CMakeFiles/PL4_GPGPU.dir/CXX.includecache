@@ -1,0 +1,46 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v10.2/include/CL/cl.h
+OpenCL/cl_platform.h
+-
+CL/cl_platform.h
+-
+
+C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v10.2/include/CL/cl_platform.h
+AvailabilityMacros.h
+-
+stdint.h
+-
+stddef.h
+-
+altivec.h
+-
+intrin.h
+-
+xmmintrin.h
+-
+intrin.h
+-
+emmintrin.h
+-
+mmintrin.h
+-
+intrin.h
+-
+immintrin.h
+-
+
+C:/Users/i-rme/Desktop/PL4_GPGPU/PL4_GPGPU/main.cpp
+iostream
+-
+OpenCL/opencl.h
+-
+CL/cl.h
+-
+

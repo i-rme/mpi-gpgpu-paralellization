@@ -1,0 +1,87 @@
+Determining if the CL_VERSION_2_2 exist failed with the following output:
+Change Dir: C:/Users/i-rme/Desktop/PL4_GPGPU/PL4_GPGPU/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):nmake /nologo cmTC_c4c83\fast && 	"C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.23.28105\bin\HostX86\x86\nmake.exe" -f CMakeFiles\cmTC_c4c83.dir\build.make /nologo -L                  CMakeFiles\cmTC_c4c83.dir\build
+Building C object CMakeFiles/cmTC_c4c83.dir/CheckSymbolExists.c.obj
+	C:\PROGRA~2\MICROS~2\2019\BUILDT~1\VC\Tools\MSVC\1423~1.281\bin\Hostx86\x86\cl.exe @C:\Users\i-rme\AppData\Local\Temp\nmFDCA.tmp
+CheckSymbolExists.c
+C:\Users\i-rme\Desktop\PL4_GPGPU\PL4_GPGPU\cmake-build-debug\CMakeFiles\CMakeTmp\CheckSymbolExists.c(8): error C2065: 'CL_VERSION_2_2': undeclared identifier
+NMAKE : fatal error U1077: 'C:\PROGRA~2\MICROS~2\2019\BUILDT~1\VC\Tools\MSVC\1423~1.281\bin\Hostx86\x86\cl.exe' : return code '0x2'
+Stop.
+NMAKE : fatal error U1077: '"C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.23.28105\bin\HostX86\x86\nmake.exe"' : return code '0x2'
+Stop.
+
+
+File C:/Users/i-rme/Desktop/PL4_GPGPU/PL4_GPGPU/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v10.2/include/CL/cl.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef CL_VERSION_2_2
+  return ((int*)(&CL_VERSION_2_2))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the CL_VERSION_2_1 exist failed with the following output:
+Change Dir: C:/Users/i-rme/Desktop/PL4_GPGPU/PL4_GPGPU/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):nmake /nologo cmTC_4c8f4\fast && 	"C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.23.28105\bin\HostX86\x86\nmake.exe" -f CMakeFiles\cmTC_4c8f4.dir\build.make /nologo -L                  CMakeFiles\cmTC_4c8f4.dir\build
+Building C object CMakeFiles/cmTC_4c8f4.dir/CheckSymbolExists.c.obj
+	C:\PROGRA~2\MICROS~2\2019\BUILDT~1\VC\Tools\MSVC\1423~1.281\bin\Hostx86\x86\cl.exe @C:\Users\i-rme\AppData\Local\Temp\nmFEB5.tmp
+CheckSymbolExists.c
+C:\Users\i-rme\Desktop\PL4_GPGPU\PL4_GPGPU\cmake-build-debug\CMakeFiles\CMakeTmp\CheckSymbolExists.c(8): error C2065: 'CL_VERSION_2_1': undeclared identifier
+NMAKE : fatal error U1077: 'C:\PROGRA~2\MICROS~2\2019\BUILDT~1\VC\Tools\MSVC\1423~1.281\bin\Hostx86\x86\cl.exe' : return code '0x2'
+Stop.
+NMAKE : fatal error U1077: '"C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.23.28105\bin\HostX86\x86\nmake.exe"' : return code '0x2'
+Stop.
+
+
+File C:/Users/i-rme/Desktop/PL4_GPGPU/PL4_GPGPU/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v10.2/include/CL/cl.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef CL_VERSION_2_1
+  return ((int*)(&CL_VERSION_2_1))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the CL_VERSION_2_0 exist failed with the following output:
+Change Dir: C:/Users/i-rme/Desktop/PL4_GPGPU/PL4_GPGPU/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):nmake /nologo cmTC_d510e\fast && 	"C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.23.28105\bin\HostX86\x86\nmake.exe" -f CMakeFiles\cmTC_d510e.dir\build.make /nologo -L                  CMakeFiles\cmTC_d510e.dir\build
+Building C object CMakeFiles/cmTC_d510e.dir/CheckSymbolExists.c.obj
+	C:\PROGRA~2\MICROS~2\2019\BUILDT~1\VC\Tools\MSVC\1423~1.281\bin\Hostx86\x86\cl.exe @C:\Users\i-rme\AppData\Local\Temp\nmC.tmp
+CheckSymbolExists.c
+C:\Users\i-rme\Desktop\PL4_GPGPU\PL4_GPGPU\cmake-build-debug\CMakeFiles\CMakeTmp\CheckSymbolExists.c(8): error C2065: 'CL_VERSION_2_0': undeclared identifier
+NMAKE : fatal error U1077: 'C:\PROGRA~2\MICROS~2\2019\BUILDT~1\VC\Tools\MSVC\1423~1.281\bin\Hostx86\x86\cl.exe' : return code '0x2'
+Stop.
+NMAKE : fatal error U1077: '"C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.23.28105\bin\HostX86\x86\nmake.exe"' : return code '0x2'
+Stop.
+
+
+File C:/Users/i-rme/Desktop/PL4_GPGPU/PL4_GPGPU/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v10.2/include/CL/cl.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef CL_VERSION_2_0
+  return ((int*)(&CL_VERSION_2_0))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
