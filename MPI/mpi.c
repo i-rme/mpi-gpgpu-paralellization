@@ -53,6 +53,10 @@ int largestNumber(int arr[], int n) {
     }
   }
 
+  if(n == 0){
+    return -1;  // No largest number
+  }
+
   return max;
 }
 
@@ -130,7 +134,14 @@ int main(int argc, char* argv[]) {
 
     // PRINT RESULT ARRAY
     int absoluteLargest = largestNumber(results, mpi_comm_size);
-    printf("The largest prime number of the array is %i. ", absoluteLargest);
+
+    if(absoluteLargest == -1){
+      printf("They were no primes in the numbers provided.");
+    }else{
+      printf("The largest prime number of the array is %i. ", absoluteLargest);
+    }
+
+
 
   }else{
     
