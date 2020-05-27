@@ -2,6 +2,9 @@
 #include <stdio.h>
 #include <string.h>
 
+// Compile using    mpic++ -o mpi mpi.cpp
+// Run using        mpirun -n 6 -hosts mpi-1 ./mpi
+
 int splitArray(int *parts, int numbers[], int numbersSize, int numParts, int index) {
   int partsSize = numbersSize / numParts;
 
