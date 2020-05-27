@@ -116,7 +116,7 @@ int main(int argc, char* argv[]) {
     memset(parts, 0, sizeof parts);
     int numeroSplit = splitArray(parts, numbers, numbersSize, numParts, index);
 
-    int primes[10];
+    int primes[0];
     int primesSize = removeNonPrimes(primes, parts, numeroSplit);
     int largest = largestNumber(primes, primesSize);
 
@@ -152,7 +152,7 @@ int main(int argc, char* argv[]) {
     MPI_Recv(&parts, numeroSplit, MPI_INT, 0, 1, MPI_COMM_WORLD, &status);
 
     // REMOVING NON PRIMES
-    int primes[10];
+    int primes[0];
     int primesSize = removeNonPrimes(primes, parts, numeroSplit);
 
     // SENDING LARGEST PRIME
