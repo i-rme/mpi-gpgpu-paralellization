@@ -35,7 +35,7 @@ int main() {
         end[i] = getEnd(numbersSize, numParts, i);
     }
 
-
+    //Setup OpenCL
     cl_platform_id platformId = NULL;
     cl_device_id deviceId = NULL;
 
@@ -45,6 +45,7 @@ int main() {
     cl_context context = clCreateContext(NULL, 1, &deviceId, NULL, NULL, NULL);
     cl_command_queue commandQueue = clCreateCommandQueue(context, deviceId, NULL, NULL);
 
+    //Create the memory buffers
     cl_mem numbersMemBuffer = clCreateBuffer(context, CL_MEM_READ_ONLY, numbersSize * sizeof(int),
                                              NULL, NULL);
     cl_mem startMemBuffer = clCreateBuffer(context, CL_MEM_READ_ONLY, numParts * sizeof(int),
@@ -53,38 +54,44 @@ int main() {
                                          NULL, NULL);
     cl_mem resultsMemBuffer = clCreateBuffer(context, CL_MEM_WRITE_ONLY, numParts * sizeof(int),
                                              NULL, NULL);
-
+    //Copy the data to the inputs
     clEnqueueWriteBuffer(commandQueue, numbersMemBuffer, CL_TRUE, 0, numbersSize * sizeof(int), numbers, 0,
                          NULL, NULL);
     clEnqueueWriteBuffer(commandQueue, startMemBuffer, CL_TRUE, 0, numParts * sizeof(int), start, 0,
                          NULL, NULL);
     clEnqueueWriteBuffer(commandQueue, endMemBuffer, CL_TRUE, 0, numParts * sizeof(int), end, 0,
                          NULL, NULL);
-
+    
+    //Define our kernel
     size_t kernelSourceSize;
     char *kernelSourceCode = getKernelCode("../return_largest_prime.cl", &kernelSourceSize);
     //printf("Code:\n%s\n",kernelSourceCode);
 
+    //Compile the kernel
     cl_program program = clCreateProgramWithSource(context, 1, (const char **) &kernelSourceCode,
                                                    (const size_t *) &kernelSourceSize, NULL);
 
     clBuildProgram(program, 1, &deviceId, NULL, NULL, NULL);
 
     cl_kernel add_kernel = clCreateKernel(program, "return_largest_prime", NULL);
-
+    
+    //Execute the kernel
     clSetKernelArg(add_kernel, 0, sizeof(cl_mem), (void *) &numbersMemBuffer);
     clSetKernelArg(add_kernel, 1, sizeof(cl_mem), (void *) &startMemBuffer);
     clSetKernelArg(add_kernel, 2, sizeof(cl_mem), (void *) &endMemBuffer);
     clSetKernelArg(add_kernel, 3, sizeof(cl_mem), (void *) &resultsMemBuffer);
 
+    //Read back the results
     size_t unsigned_numParts = numParts;
     clEnqueueNDRangeKernel(commandQueue, add_kernel, 1, NULL, &unsigned_numParts, NULL,
                            0, NULL, NULL);
 
     clEnqueueReadBuffer(commandQueue, resultsMemBuffer, CL_TRUE, 0, numParts * sizeof(int),
                         results, 0, NULL, NULL);
-
-
+    
+    //Wait for everything to finish
+    clFinish(commandQueue);
+    
 /*
     //Debug to see the result of each worker
     for (int i=0; i<numParts;i++){
