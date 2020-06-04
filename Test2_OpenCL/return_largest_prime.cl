@@ -10,7 +10,7 @@ __kernel void return_largest_prime(
 
       int partsSize = end[index] - start[index];
 
-      int primes[100];
+      int primes[1024];
       int primesSize = 0;
 
       // Loop into our batch of numbers and stores primes in array
