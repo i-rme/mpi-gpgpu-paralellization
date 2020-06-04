@@ -16,21 +16,23 @@ int askDevice();
 
 int main() {
 
-    showDevices();
+    showDevices();                  // Show beautiful device list
 
     int platformIndex, deviceIndex;
     platformIndex = askPlatform();  // Nvidia, Intel, or AMD
     deviceIndex = askDevice();      // Device ID
 
-    /*
-    const int numbersSize = 48;     // How many numbers we want to work with in total
-    int numbers[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
-                    26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47};
-    */
+    // OPTION 1 START, fixed array of numbers
+    //const int numbersSize = 48;     // How many numbers we want to work with in total
+    //int numbers[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
+    //                26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47};
+    // OPTION 1 END, fixed array of number
 
+    // OPTION 2 START, big array of numbers
     const int numbersSize = 100000;     // How many numbers we want to work with in total
     int numbers[numbersSize];
     for (int n = 0; n < numbersSize; ++n) { numbers[n] = n; }   // Fill some numbers
+    // OPTION 2 END, big array of numbers
 
     //const int numParts = 6;         // Number of parts to split our work into
     const int numParts = (numbersSize/5000)+1;         // Number of parts to split our work into
@@ -47,14 +49,27 @@ int main() {
     }
 
     //Setup OpenCL
-    cl_platform_id platformId = NULL;
-    cl_device_id deviceId = NULL;
+    cl_uint numPlatforms;
+    cl_platform_id *platformId;
 
-    clGetPlatformIDs(platformIndex, &platformId, NULL);
-    clGetDeviceIDs(platformId, CL_DEVICE_TYPE_ALL, deviceIndex, &deviceId, NULL);
+    clGetPlatformIDs(0, NULL, &numPlatforms);
+    platformId = new cl_platform_id[numPlatforms];
+    clGetPlatformIDs(numPlatforms, platformId, NULL);
 
-    cl_context context = clCreateContext(NULL, 1, &deviceId, NULL, NULL, NULL);
-    cl_command_queue commandQueue = clCreateCommandQueue(context, deviceId, NULL, NULL);
+    cl_uint numDevices;
+    cl_device_id *devices;
+    clGetDeviceIDs(platformId[platformIndex], CL_DEVICE_TYPE_ALL, 0, NULL, &numDevices);
+    devices = new cl_device_id[numDevices];
+    clGetDeviceIDs(platformId[platformIndex], CL_DEVICE_TYPE_ALL, numDevices, devices, NULL);
+
+    // Printing device selection
+    const int deviceLength = 100;
+    char deviceName[deviceLength];
+    clGetDeviceInfo(devices[deviceIndex], CL_DEVICE_NAME, deviceLength, deviceName, NULL);
+    printf("\nYou have selected %s\n", deviceName);
+
+    cl_context context = clCreateContext(NULL, 1, &devices[deviceIndex], NULL, NULL, NULL);
+    cl_command_queue commandQueue = clCreateCommandQueue(context, devices[deviceIndex], NULL, NULL);
 
     //Create the memory buffers
     cl_mem numbersMemBuffer = clCreateBuffer(context, CL_MEM_READ_ONLY, numbersSize * sizeof(int),
@@ -82,7 +97,7 @@ int main() {
     cl_program program = clCreateProgramWithSource(context, 1, (const char **) &kernelSourceCode,
                                                    (const size_t *) &kernelSourceSize, NULL);
 
-    clBuildProgram(program, 1, &deviceId, NULL, NULL, NULL);
+    clBuildProgram(program, 1, &devices[deviceIndex], NULL, NULL, NULL);
 
     cl_kernel add_kernel = clCreateKernel(program, "return_largest_prime", NULL);
 
@@ -225,7 +240,7 @@ void showDevices() {
             clGetDeviceInfo(devices[j], CL_DEVICE_NAME, deviceLength, deviceName, NULL);
             clGetDeviceInfo(devices[j], CL_DEVICE_MAX_COMPUTE_UNITS, sizeof(cl_uint),
                             &deviceMaxComputeUnits, NULL);
-            printf("        (%d). %s with %u CU\n", j + 1, deviceName, deviceMaxComputeUnits);
+            printf("        (%d). %s with %u CU\n", j, deviceName, deviceMaxComputeUnits);
         }
     }
 
