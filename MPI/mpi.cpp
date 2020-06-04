@@ -5,8 +5,9 @@
 
 /*
   Compile using    mpic++ -o mpi mpi.cpp
-  Run using        mpirun -n <numberOfWorkers> -hosts <listOfHosts> ./mpi
-  Example          mpirun -n 6 -hosts mpi-1 ./mpi
+  Transfer with    scp ./mpi mpi-2:.
+  Run using        mpirun -n <numberOfWorkers> --hosts <listOfHosts> ./mpi
+  Example          mpirun -n 4 --hosts mpi-1,mpi-2 ./mpi
 */
 
 int splitArray(int *parts, int numbers[], int numbersSize, int numParts, int index) {
