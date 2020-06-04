@@ -1,25 +1,28 @@
 #include <iostream>
-
 #ifdef __APPLE__
 #include <OpenCL/opencl.h>
 #else
-
 #include <CL/cl.h>
-
 #endif
 
 char *getKernelCode(const char *fileName, size_t *kernelSourceSize);
-
 int getStart(int numbersSize, int numParts, int index);
-
 int getEnd(int numbersSize, int numParts, int index);
-
 int largestNumber(int arr[], int n);
+void showDevices();
+int askPlatform();
+int askDevice();
 
 int main() {
 
-    const int numParts = 6; //numero de cores a usar
-    const int numbersSize = 48;
+    showDevices();
+
+    int platformIndex, deviceIndex;
+    platformIndex = askPlatform();  // Nvidia, Intel, or AMD
+    deviceIndex = askDevice();      // Device ID
+
+    const int numParts = 6;         // Number of parts to split our work into
+    const int numbersSize = 48;     // How many numbers we want to work with in total
 
     int results[numParts];
     int start[numParts];
@@ -39,8 +42,8 @@ int main() {
     cl_platform_id platformId = NULL;
     cl_device_id deviceId = NULL;
 
-    clGetPlatformIDs(1, &platformId, NULL);
-    clGetDeviceIDs(platformId, CL_DEVICE_TYPE_ALL, 1, &deviceId, NULL);
+    clGetPlatformIDs(platformIndex, &platformId, NULL);
+    clGetDeviceIDs(platformId, CL_DEVICE_TYPE_ALL, deviceIndex, &deviceId, NULL);
 
     cl_context context = clCreateContext(NULL, 1, &deviceId, NULL, NULL, NULL);
     cl_command_queue commandQueue = clCreateCommandQueue(context, deviceId, NULL, NULL);
@@ -61,7 +64,7 @@ int main() {
                          NULL, NULL);
     clEnqueueWriteBuffer(commandQueue, endMemBuffer, CL_TRUE, 0, numParts * sizeof(int), end, 0,
                          NULL, NULL);
-    
+
     //Define our kernel
     size_t kernelSourceSize;
     char *kernelSourceCode = getKernelCode("../return_largest_prime.cl", &kernelSourceSize);
@@ -74,7 +77,7 @@ int main() {
     clBuildProgram(program, 1, &deviceId, NULL, NULL, NULL);
 
     cl_kernel add_kernel = clCreateKernel(program, "return_largest_prime", NULL);
-    
+
     //Execute the kernel
     clSetKernelArg(add_kernel, 0, sizeof(cl_mem), (void *) &numbersMemBuffer);
     clSetKernelArg(add_kernel, 1, sizeof(cl_mem), (void *) &startMemBuffer);
@@ -88,10 +91,10 @@ int main() {
 
     clEnqueueReadBuffer(commandQueue, resultsMemBuffer, CL_TRUE, 0, numParts * sizeof(int),
                         results, 0, NULL, NULL);
-    
+
     //Wait for everything to finish
     clFinish(commandQueue);
-    
+
 /*
     //Debug to see the result of each worker
     for (int i=0; i<numParts;i++){
@@ -100,7 +103,7 @@ int main() {
 */
 
     int max = largestNumber(results, numParts);
-    printf("The biggest prime number is: %d", max);
+    printf("\nThe biggest prime number is: %d", max);
 
     return 0;
 }
@@ -162,4 +165,56 @@ void printArray(int array[], int arraySize) {
     for (int i = 0; i < arraySize; i++) {
         printf("%i, ", array[i]);
     }
+}
+
+int askPlatform() {
+    int i;
+    printf("[ ] Enter the platform index you want to use: ");
+    scanf("%d", &i);
+    return i;
+}
+
+int askDevice() {
+    int i;
+    printf("       ( ) Enter the device index you want to use: ");
+    scanf("%d", &i);
+    return i;
+}
+
+void showDevices() {
+    printf("Welcome, here is the list of platform, devices, and its index numbers: \n");
+
+    cl_uint numPlatforms;
+    cl_platform_id *platformId;
+
+    clGetPlatformIDs(0, NULL, &numPlatforms);
+
+    platformId = new cl_platform_id[numPlatforms];
+    clGetPlatformIDs(numPlatforms, platformId, NULL);
+
+    for (int i = 0; i < numPlatforms; i++) {
+        const int nameLength = 100;
+        char platformName[nameLength];
+        clGetPlatformInfo(platformId[i], CL_PLATFORM_NAME, nameLength, platformName, NULL);
+        printf("[%d]. %s\n", i, platformName);
+
+        cl_uint numDevices;
+        cl_device_id *devices;
+        clGetDeviceIDs(platformId[i], CL_DEVICE_TYPE_ALL, 0, NULL, &numDevices);
+        devices = new cl_device_id[numDevices];
+        clGetDeviceIDs(platformId[i], CL_DEVICE_TYPE_ALL, numDevices, devices, NULL);
+
+        for (int j = 0; j < numDevices; j++) {
+            const int deviceLength = 100;
+            char deviceName[deviceLength];
+            cl_uint deviceMaxComputeUnits;
+            clGetDeviceInfo(devices[j], CL_DEVICE_NAME, deviceLength, deviceName, NULL);
+            clGetDeviceInfo(devices[j], CL_DEVICE_MAX_COMPUTE_UNITS, sizeof(cl_uint),
+                            &deviceMaxComputeUnits, NULL);
+            printf("        (%d). %s with %u CU\n", j + 1, deviceName, deviceMaxComputeUnits);
+        }
+    }
+
+    delete[] platformId;
+
 }
