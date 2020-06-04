@@ -1,6 +1,7 @@
 #include <mpi.h>
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 
 /*
   Compile using    mpic++ -o mpi mpi.cpp
@@ -117,11 +118,23 @@ int main(int argc, char* argv[]) {
 
   if(mpi_comm_rank == 0){ // If we are runnin on master
 
+    printf("MPI innitialized sucessfully, starting to work...\n");
+    clock_t time_begin = clock();    //Start measuring execution time
+
+
     // INPUT
-    int numbers[] = {0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12,
-                       13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
-                       26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38,
-                       39, 40, 41, 42, 43, 44, 45, 46, 47};
+
+    // OPTION 1 START, fixed array of numbers
+    //int numbers[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
+    //                26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47};
+    // OPTION 1 END, fixed array of number
+
+    // OPTION 2 START, big array of numbers
+    const int arraySize = 100000;     // How many numbers we want to work with in total
+    int numbers[arraySize];
+    for (int n = 0; n < arraySize; ++n) { numbers[n] = n; }   // Fill some numbers
+    // OPTION 2 END, big array of numbers
+
 
     for (int i = 1; i < mpi_comm_size; i++) { //Preparing and sending the slices to the workers
 
@@ -175,6 +188,10 @@ int main(int argc, char* argv[]) {
     }else{
       printf("The largest prime number of the array is %i. ", absoluteLargest);
     }
+
+    clock_t time_end = clock();
+    double time_spent = (double)(time_end - time_begin) / CLOCKS_PER_SEC;
+    printf("\nTime spent: %ims\n", (int)(time_spent*1000));
 
 
 
