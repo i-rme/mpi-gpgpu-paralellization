@@ -5,7 +5,9 @@ __kernel void return_largest_prime(
                         __global int *results
                         ) {
 
-      int index = get_global_id(0);
+      int index = get_global_id(0); //returns the global ID of the workitem in the first dimension.
+      //Each workitem needs to know its global ID and then use it to access the data.
+
       int partsSize = end[index] - start[index];
 
       int primes[100];
