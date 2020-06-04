@@ -4,6 +4,7 @@
 #else
 #include <CL/cl.h>
 #endif
+#include <time.h>
 
 char *getKernelCode(const char *fileName, size_t *kernelSourceSize);
 int getStart(int numbersSize, int numParts, int index);
@@ -32,6 +33,8 @@ int main() {
                      13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
                      26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38,
                      39, 40, 41, 42, 43, 44, 45, 46, 47};
+
+    clock_t time_begin = clock();    //Start measuring execution time
 
     for (int i = 0; i < numParts; i++) {
         start[i] = getStart(numbersSize, numParts, i);
@@ -103,7 +106,13 @@ int main() {
 */
 
     int max = largestNumber(results, numParts);
+
+    clock_t time_end = clock();
+    double time_spent = (double)(time_end - time_begin) / CLOCKS_PER_SEC;
+
+
     printf("\nThe biggest prime number is: %d", max);
+    printf("\nTime spent: %ims", (int)floor(time_spent*1000));
 
     return 0;
 }
