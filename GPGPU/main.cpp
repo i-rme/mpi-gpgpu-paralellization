@@ -132,7 +132,7 @@ int main() {
 
 
     printf("\nThe biggest prime number is: %d", max);
-    printf("\nTime spent: %ims", (int)floor(time_spent*1000));
+    printf("\nTime spent: %ims", (int)(time_spent*1000));
 
     return 0;
 }
